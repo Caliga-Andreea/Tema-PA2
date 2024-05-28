@@ -28,6 +28,7 @@ int main(int argc, char* argv[])
     invins=createQueue();
     castig=createQueue();
     coadaechfis(f1,&q,nrech);
+    Graph *g=creareGraph(32);
     while(nrech>1)
     {
     while(castig->front!=NULL)
@@ -38,7 +39,7 @@ int main(int argc, char* argv[])
     while(q->front!=NULL)
     {
         copy=q->front;
-        meci(copy,copy->next,invins,castig);
+        meci(copy,copy->next,invins,castig,g);
         deQueue(q);
         deQueue(q);
     }
@@ -46,5 +47,6 @@ int main(int argc, char* argv[])
     while(invins->front!=NULL)
         deQueue(invins);
     }
+    printGraph(f2,g);
     return 0;
 }

@@ -1,5 +1,5 @@
 #include "Biblioteca.h"
-echipa* createch(float punctaj,char *nume)
+echipa* createch(float punctaj,char *nume,int n)
 {
     echipa *membru=(echipa*)malloc(sizeof(echipa));
     if(membru==NULL)
@@ -10,6 +10,7 @@ echipa* createch(float punctaj,char *nume)
     membru->punctaj=punctaj;
     membru->numech=malloc((strlen(nume)+1)*sizeof(char));
     strcpy(membru->numech,nume);
+    membru->pozitie=n;
     return membru;
 }
 Queue * createQueue ()
@@ -54,7 +55,7 @@ void coadaechfis(FILE *f1,Queue **q,int nrech)
     echipa *ech;
     int i;
     numech=(char*)malloc(sizeof(char)*50);
-    for(i=0;i<nrech;i++)
+    for(i=0; i<nrech; i++)
     {
         ech=NULL;
         numech=(char*)realloc(numech,50);
@@ -64,21 +65,23 @@ void coadaechfis(FILE *f1,Queue **q,int nrech)
         numech[strlen(numech)-1]='\0';
         while(numech[strlen(numech)-1]==' ')
             numech[strlen(numech)-1]='\0';
-        ech=createch(punctaj,numech);
+        ech=createch(punctaj,numech,i);
         enQueue(*q,ech);
     }
 }
-void meci(echipa *ech1,echipa *ech2,Queue *invins,Queue *castig)
+void meci(echipa *ech1,echipa *ech2,Queue *invins,Queue *castig,Graph *g)
 {
     if(ech1->punctaj>ech2->punctaj)
     {
         enQueue(castig,ech1);
         enQueue(invins,ech2);
+        g->a[ech2->pozitie][ech1->pozitie]=1;
     }
     else if(ech1->punctaj<ech2->punctaj)
     {
         enQueue(invins,ech1);
         enQueue(castig,ech2);
+        g->a[ech1->pozitie][ech2->pozitie]=1;
     }
     else
     {
@@ -86,11 +89,43 @@ void meci(echipa *ech1,echipa *ech2,Queue *invins,Queue *castig)
         {
             enQueue(castig,ech1);
             enQueue(invins,ech2);
+            g->a[ech2->pozitie][ech1->pozitie]=1;
         }
         else
         {
             enQueue(invins,ech1);
             enQueue(castig,ech2);
+            g->a[ech1->pozitie][ech2->pozitie]=1;
         }
+    }
+}
+Graph* creareGraph(int V)
+{
+    int i;
+    Graph *g=(Graph*)malloc(sizeof(Graph));
+    if(g==NULL)
+    {
+        printf("memerror");
+        return NULL;
+    }
+    g->V=V;
+    g->a=(int **)malloc(g->V*sizeof(int*));
+    for(i=0; i<g->V; i++)
+        g->a[i]=(int*)calloc(g->V,sizeof(int));
+        if(g->a==NULL)
+        {
+            printf("memerror");
+            return NULL;
+        }
+    return g;
+}
+void printGraph ( FILE *f2,Graph *g)
+{
+    int i, j;
+    for (i=0; i<g->V; i++)
+    {
+        for (j=0; j<g->V; j++)
+            fprintf (f2,"%d ",g->a[i][j]);
+        fprintf (f2,"\n");
     }
 }
