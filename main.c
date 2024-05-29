@@ -7,25 +7,12 @@
 int main(int argc, char* argv[])
 {
     FILE *f1=fopen(argv[1],"rt"),*f2=fopen(argv[2],"wt"),*f3=fopen(argv[3],"wt");
-    if(f1==NULL)
-    {
-        printf("Fisierul nu a putut fi deschis");
-        exit(1);
-    }
-    if(f2==NULL)
-    {
-        printf("Fisierul nu a putut fi deschis");
-        exit(1);
-    }
-    if(f3==NULL)
-    {
-        printf("Fisierul nu a putut fi deschis");
-        exit(1);
-    }
+    testfis(f1);
+    testfis(f2);
+    testfis(f3);
     int nrech=32;
     Queue *q,*invins,*castig;
     echipa *copy;
-    float pr;
     q=createQueue();
     invins=createQueue();
     castig=createQueue();
@@ -48,14 +35,6 @@ int main(int argc, char* argv[])
     nrech=nrech/2;
     }
     printGraph(f2,g);
-    copy=invins->front;
-    while(copy!=NULL)
-    {
-        pr=calcul(copy->r,(castig->front->r)+1);
-        fprintf(f3,"%.4f %s\n",pr,copy->numech);
-        copy=copy->next;
-    }
-    pr=calcul(castig->front->r,(castig->front->r)+1);
-    fprintf(f3,"%.4f %s",pr,castig->front->numech);
+    printScor(f3,invins,castig);
     return 0;
 }

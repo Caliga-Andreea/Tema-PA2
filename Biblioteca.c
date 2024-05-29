@@ -141,3 +141,24 @@ float calcul(int r, int l)
     pr=(float)(q*pow((2-q),r))/(pow(2,l)+pow((2-q),l)*(q-1));
     return pr;
 }
+void testfis(FILE *f)
+{
+    if(f==NULL)
+    {
+        printf("Fisierul nu a putut fi deschis");
+        exit(1);
+    }
+}
+void printScor(FILE *f3,Queue *invins,Queue *castig)
+{
+    float pr;
+    while(invins->front!=NULL)
+    {
+        pr=calcul(invins->front->r,(castig->front->r)+1);
+        fprintf(f3,"%.4f %s\n",pr,invins->front->numech);
+        deQueue(invins);
+    }
+    pr=calcul(castig->front->r,(castig->front->r)+1);
+    fprintf(f3,"%.4f %s",pr,castig->front->numech);
+    deQueue(castig);
+}

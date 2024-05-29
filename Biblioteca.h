@@ -31,3 +31,5 @@ void meci(echipa *ech1,echipa *ech2,Queue *invins,Queue *castig,Graph *g);
 Graph* creareGraph(int V);
 void printGraph ( FILE *f2,Graph *g);
 float calcul(int r, int l);
+void testfis(FILE *f);
+void printScor(FILE *f3,Queue *invins,Queue *castig);
