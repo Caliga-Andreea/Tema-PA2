@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "Biblioteca.h"
 ///argv[0]=exec, argv[1]=input,argv[2]=rezgraf,argv[3]=rezscor
 int main(int argc, char* argv[])
@@ -24,6 +25,7 @@ int main(int argc, char* argv[])
     int nrech=32;
     Queue *q,*invins,*castig;
     echipa *copy;
+    float pr;
     q=createQueue();
     invins=createQueue();
     castig=createQueue();
@@ -44,9 +46,16 @@ int main(int argc, char* argv[])
         deQueue(q);
     }
     nrech=nrech/2;
-    while(invins->front!=NULL)
-        deQueue(invins);
     }
     printGraph(f2,g);
+    copy=invins->front;
+    while(copy!=NULL)
+    {
+        pr=calcul(copy->r,(castig->front->r)+1);
+        fprintf(f3,"%.4f %s\n",pr,copy->numech);
+        copy=copy->next;
+    }
+    pr=calcul(castig->front->r,(castig->front->r)+1);
+    fprintf(f3,"%.4f %s",pr,castig->front->numech);
     return 0;
 }

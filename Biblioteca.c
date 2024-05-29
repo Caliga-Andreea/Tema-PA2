@@ -11,6 +11,7 @@ echipa* createch(float punctaj,char *nume,int n)
     membru->numech=malloc((strlen(nume)+1)*sizeof(char));
     strcpy(membru->numech,nume);
     membru->pozitie=n;
+    membru->r=0;
     return membru;
 }
 Queue * createQueue ()
@@ -73,12 +74,14 @@ void meci(echipa *ech1,echipa *ech2,Queue *invins,Queue *castig,Graph *g)
 {
     if(ech1->punctaj>ech2->punctaj)
     {
+        (ech1->r)++;
         enQueue(castig,ech1);
         enQueue(invins,ech2);
         g->a[ech2->pozitie][ech1->pozitie]=1;
     }
     else if(ech1->punctaj<ech2->punctaj)
     {
+        (ech2->r)++;
         enQueue(invins,ech1);
         enQueue(castig,ech2);
         g->a[ech1->pozitie][ech2->pozitie]=1;
@@ -87,12 +90,14 @@ void meci(echipa *ech1,echipa *ech2,Queue *invins,Queue *castig,Graph *g)
     {
         if(strcmp(ech1->numech,ech2->numech)>0)
         {
+            (ech1->r)++;
             enQueue(castig,ech1);
             enQueue(invins,ech2);
             g->a[ech2->pozitie][ech1->pozitie]=1;
         }
         else
         {
+            (ech2->r)++;
             enQueue(invins,ech1);
             enQueue(castig,ech2);
             g->a[ech1->pozitie][ech2->pozitie]=1;
@@ -128,4 +133,11 @@ void printGraph ( FILE *f2,Graph *g)
             fprintf (f2,"%d ",g->a[i][j]);
         fprintf (f2,"\n");
     }
+}
+float calcul(int r, int l)
+{
+    float q=0.15;
+    float pr=0;
+    pr=(float)(q*pow((2-q),r))/(pow(2,l)+pow((2-q),l)*(q-1));
+    return pr;
 }
